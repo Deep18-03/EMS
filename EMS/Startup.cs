@@ -1,15 +1,14 @@
+using BussinessLayer;
+using BussinessLayer.Interface;
+using DataAccessLayer;
 using DataAccessLayer.Context;
+using DataAccessLayer.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EMS
 {
@@ -29,6 +28,17 @@ namespace EMS
 
             services.AddDbContext<EMSDbContext>(options =>
               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+
+            services.AddScoped<IEmployeeManager, EmployeeManager>();
+            services.AddScoped<IEmployeeData, EmployeeData>();
+
+            services.AddScoped<IDepartmentManager, DepartmentManager>();
+            services.AddScoped<IDepartmentData, DepartmentData>();
+
+            services.AddScoped<IDesignationManager, DesignationManager>();
+            services.AddScoped<IDesignationData, DesignationData>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
