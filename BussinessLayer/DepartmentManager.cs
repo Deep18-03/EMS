@@ -1,4 +1,6 @@
 ﻿using BussinessLayer.Interface;
+using DataAccessLayer.Interface;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +11,14 @@ namespace BussinessLayer
 {
     public class DepartmentManager : IDepartmentManager
     {
+        private IDepartmentData _departmentData;
+        public DepartmentManager(IDepartmentData departmentData)
+        {
+            _departmentData = departmentData;
+        }
+        public IEnumerable<DepartmentModel> GetDepartmentDropdownList()
+        {
+            return _departmentData.GetDepartmentDropdownList();
+        }
     }
 }
