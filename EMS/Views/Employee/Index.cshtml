@@ -1,38 +1,75 @@
-﻿@model IEnumerable<Model.EmployeeModel>
+﻿@*@model IEnumerable<Model.EmployeeModel>*@
+@model CommonLayer.Utility.PagingList<Model.EmployeeModel>
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewData["Title"] = "Employee List";
 }
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
+    
 </p>
-<div class="card">
+
+
+
+@using (Html.BeginForm())
+{
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4">
+                    <label class="control-label">Emp Tag :</label>
+                    @Html.TextBox("SearchByEmpTag", null, new { @class = "form-control" })
+                </div>
+                <div class="col-4">
+                    <label class="control-label">First Name :</label>
+                    @Html.TextBox("SearchByFirstName", null, new { @class = "form-control" })
+                </div>
+                <div class="col-4">
+                    <label class="control-label">Email:</label>
+                    @Html.TextBox("SearchByEmail", null, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row mt-2" >
+                <div class="col-6">
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                    <input type="button" value="Clear" id="ClearSearch" class="btn btn-danger" onclick="clearFields()"/>
+                </div>
+                <div class="col-6">
+                    <a asp-action="Create" class="btn btn-secondary" style="float:right">Add Employee</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="card mt-2">
     <div class="card-body">
         <h2 class="card-title">Employee List</h2>
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.EmpTagNumber)
+                        @*@Html.DisplayNameFor(model => model.EmpTagNumber)*@
+                        @Html.ActionLink("Emp Tag #", "Index", new { sortField = "EmpTagNumber", currentSortField = ViewBag.SortField, currentSortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.EmailAddress)
+                        @Html.ActionLink("EmailAddress", "Index", new { sortField = "EmailAddress", currentSortField = ViewBag.SortField, currentSortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.FirstName)
+                        @Html.ActionLink("First Name", "Index", new { sortField = "FirstName", currentSortField = ViewBag.SortField, currentSortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.LastName)
+                        @Html.ActionLink("Last Name", "Index", new { sortField = "LastName", currentSortField = ViewBag.SortField, currentSortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.DepartmentName)
+                        @Html.ActionLink("Department", "Index", new { sortField = "DepartmentName", currentSortField = ViewBag.SortField, currentSortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.DesignationName)
+                        @Html.ActionLink("Designation", "Index", new { sortField = "DesignationName", currentSortField = ViewBag.SortField, currentSortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Age)
+                        @Html.ActionLink("Age", "Index", new { sortField = "Age", currentSortField = ViewBag.SortField, currentSortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })
                     </th>
                     <th></th>
                 </tr>
@@ -72,8 +109,34 @@
                 }
             </tbody>
         </table>
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            var totalPageNo = Model.TotalPageNo;
+            var currentPageNo = Model.PageIndex;
+        }
+
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNo="@(Model.PageIndex - 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-default @prevDisabled">
+            Previous
+        </a>
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNo="@(Model.PageIndex + 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-default @nextDisabled">
+            Next
+        </a>
+        <span>
+            Page No : @currentPageNo of @totalPageNo
+        </span>
     </div>
 </div>
+<br />
+
 
 
 <div class="modal" id="deleteConfirmationModal" tabindex="-1" role="dialog">
@@ -104,4 +167,10 @@
             $('#deleteConfirmationModal').modal('show');
         });
     });
+
+    function clearFields() {
+        document.getElementById("SearchByEmpTag").value = "";
+        document.getElementById("SearchByFirstName").value = "";
+        document.getElementById("SearchByEmail").value = "";
+    }
 </script>

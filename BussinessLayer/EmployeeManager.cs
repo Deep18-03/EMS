@@ -1,7 +1,9 @@
 ﻿using BussinessLayer.Interface;
 using DataAccessLayer.Interface;
 using Model;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BussinessLayer
 {
@@ -13,9 +15,23 @@ namespace BussinessLayer
             _employeeData = employeeData;
         }
 
-        public IEnumerable<EmployeeModel> GetAllEmployees()
+        public IEnumerable<EmployeeModel> GetAllEmployees(string SearchByEmpTag,string SearchByFirstName, string SearchByEmail)
         {
-            return _employeeData.GetAllEmployees();
+            var employees = _employeeData.GetAllEmployees();
+
+            if (!String.IsNullOrEmpty(SearchByEmpTag))
+            {
+                employees = employees.Where(s => s.EmpTagNumber.ToLower().Contains(SearchByEmpTag.Trim().ToLower())).ToList();
+            }
+            if (!String.IsNullOrEmpty(SearchByFirstName))
+            {
+                employees = employees.Where(s => s.FirstName.ToLower().Contains(SearchByFirstName.Trim().ToLower())).ToList();
+            }
+            if (!String.IsNullOrEmpty(SearchByEmail))
+            {
+                employees = employees.Where(s => s.EmailAddress.ToLower().Contains(SearchByEmail.Trim().ToLower())).ToList();
+            }
+            return employees;
         }
 
         public bool AddEmployee(EmployeeModel model)
@@ -37,6 +53,7 @@ namespace BussinessLayer
         {
             return _employeeData.DeleteEmployee(id);
         }
+
 
     }
 }

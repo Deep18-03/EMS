@@ -20,13 +20,21 @@ namespace DataAccessLayer
 
         public IEnumerable<DesignationModel> GetDesignationDropdownList()
         {
-            return _context.Designations
-                  .Select(e => new DesignationModel
-                  {
-                      DesignationId = e.DesignationId,
-                      DesignationName = e.DesignationName
-                  })
-                  .ToList();
+            try
+            {
+                return _context.Designations
+                                 .Select(e => new DesignationModel
+                                 {
+                                     DesignationId = e.DesignationId,
+                                     DesignationName = e.DesignationName
+                                 })
+                                 .ToList();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

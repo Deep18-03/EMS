@@ -19,13 +19,21 @@ namespace DataAccessLayer.Interface
 
         public IEnumerable<DepartmentModel> GetDepartmentDropdownList()
         {
-            return _context.Departments
-                  .Select(e => new DepartmentModel
-                  {
-                      DepartmentId = e.DepartmentId,
-                      DepartmentName = e.DepartmentName
-                  })
-                  .ToList();
+            try
+            {
+                return _context.Departments
+                .Select(e => new DepartmentModel
+                {
+                    DepartmentId = e.DepartmentId,
+                    DepartmentName = e.DepartmentName
+                })
+                .ToList();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

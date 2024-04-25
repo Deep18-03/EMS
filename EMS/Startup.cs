@@ -3,6 +3,7 @@ using BussinessLayer.Interface;
 using DataAccessLayer;
 using DataAccessLayer.Context;
 using DataAccessLayer.Interface;
+using EMS.CustomMiddleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -54,6 +55,8 @@ namespace EMS
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseErrorHandlingMiddleware();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -65,7 +68,7 @@ namespace EMS
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Employee}/{action=Index}/{id?}");
             });
         }
     }
