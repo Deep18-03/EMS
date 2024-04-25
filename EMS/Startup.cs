@@ -58,6 +58,7 @@ namespace EMS
 
             app.UseErrorHandlingMiddleware();
             app.UseHttpsRedirection();
+            app.UseStatusCodePagesWithRedirects("/Home/Error/{0}");
             app.UseStaticFiles();
 
             app.UseRouting();

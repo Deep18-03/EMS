@@ -28,6 +28,12 @@ namespace EMS.Controllers
             return View();
         }
 
+        [Route("/Home/Error/{code:int}")]
+        public IActionResult Error(int code)
+        {
+            return View(new ErrorViewModel { RequestId = "Test", ErrorMessage = $"Error Occured. Error Code is {code}" });
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
