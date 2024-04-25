@@ -20,5 +20,10 @@ namespace BussinessLayer
         {
             return _designationData.GetDesignationDropdownList();
         }
+
+        public bool AddDesignation(DesignationModel model)
+        {
+            return _designationData.AddDesignation(model);
+        }
     }
 }

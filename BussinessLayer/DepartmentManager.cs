@@ -20,5 +20,10 @@ namespace BussinessLayer
         {
             return _departmentData.GetDepartmentDropdownList();
         }
+
+        public bool AddDepartment(DepartmentModel model)
+        {
+            return _departmentData.AddDepartment(model);
+        }
     }
 }

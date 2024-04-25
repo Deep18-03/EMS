@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Context;
+using DataAccessLayer.Entity;
 using DataAccessLayer.Interface;
 using Model;
 using System;
@@ -33,6 +34,30 @@ namespace DataAccessLayer
             catch (Exception)
             {
 
+                throw;
+            }
+        }
+
+        public bool AddDesignation(DesignationModel model)
+        {
+            try
+            {
+                if (model != null)
+                {
+                    var _designation = new DesignationEntity
+                    {
+                        DesignationName = model.DesignationName.Trim().ToUpper(),
+                    };
+
+                    _context.Designations.Add(_designation);
+                    _context.SaveChanges();
+
+                    return true;
+                }
+                return false;
+            }
+            catch (System.Exception)
+            {
                 throw;
             }
         }

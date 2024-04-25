@@ -1,0 +1,31 @@
+﻿@model Model.DesignationModel
+
+<hr />
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title">Add Department</h2>
+        <form asp-action='Create'>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row m-2">
+                <div class="col-6">
+                    <label asp-for="DesignationName" class="control-label"></label>
+                    <input asp-for="DesignationName" class="form-control" maxlength="100"/>
+                    <span asp-validation-for="DesignationName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mt-3 ml-2">
+                <div class="col">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <a asp-controller="Employee" asp-action="Create" class="btn btn-secondary">Cancel</a>
+                </div>
+                <div class="col">
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

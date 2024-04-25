@@ -10,5 +10,6 @@ namespace DataAccessLayer.Interface
     public interface IDesignationData
     {
         IEnumerable<DesignationModel> GetDesignationDropdownList();
+        bool AddDesignation(DesignationModel model);
     }
 }

@@ -10,5 +10,6 @@ namespace BussinessLayer.Interface
     public interface IDepartmentManager
     {
         IEnumerable<DepartmentModel> GetDepartmentDropdownList();
+        bool AddDepartment(DepartmentModel model);
     }
 }

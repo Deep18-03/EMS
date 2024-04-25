@@ -10,5 +10,6 @@ namespace DataAccessLayer.Interface
     public interface IDepartmentData
     {
         IEnumerable<DepartmentModel> GetDepartmentDropdownList();
+        bool AddDepartment(DepartmentModel model);
     }
 }

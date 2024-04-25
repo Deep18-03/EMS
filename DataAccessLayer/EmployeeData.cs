@@ -77,7 +77,6 @@ namespace DataAccessLayer
             {
                 throw;
             }
-
         }
 
         public EmployeeModel GetEmployeeById(int id)

@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Context;
+using DataAccessLayer.Entity;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,30 @@ namespace DataAccessLayer.Interface
             catch (Exception)
             {
 
+                throw;
+            }
+        }
+
+        public bool AddDepartment(DepartmentModel model)
+        {
+            try
+            {
+                if (model != null)
+                {
+                    var _department = new DepartmentEntity
+                    {
+                        DepartmentName = model.DepartmentName.Trim().ToUpper(),
+                    };
+
+                    _context.Departments.Add(_department);
+                    _context.SaveChanges();
+
+                    return true;
+                }
+                return false;
+            }
+            catch (System.Exception)
+            {
                 throw;
             }
         }
