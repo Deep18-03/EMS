@@ -16,7 +16,7 @@ namespace BussinessLayer
             _employeeData = employeeData;
         }
 
-        public IEnumerable<EmployeeModel> GetAllEmployees(string SearchByEmpTag,string SearchByFirstName, string SearchByEmail)
+        public IEnumerable<EmployeeModel> GetAllEmployees(string SearchByEmpTag, string SearchByFirstName, string SearchByEmail)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace BussinessLayer
             {
                 throw new Exception("An error occurred in the business logic while getting employees", ex);
             }
-           
+
         }
 
         public string AddEmployee(EmployeeModel model)
@@ -77,26 +77,17 @@ namespace BussinessLayer
             }
         }
 
-        public string UpdateEmployee(EmployeeModel model)
+        public bool UpdateEmployee(EmployeeModel model)
         {
             try
             {
-                bool employeeExists = _employeeData.EmployeeExists(model.EmpTagNumber);
-                if (employeeExists)
-                {
-                    return AppConstant.alreadyExists;
-                }
-                else
-                {
-                    _employeeData.UpdateEmployee(model);
-                    return AppConstant.addedSuccessfully;
-                }
+               return _employeeData.UpdateEmployee(model);
             }
             catch (Exception ex)
             {
                 throw new Exception("An error occurred in the business logic while updating employee", ex);
             }
-            
+
         }
 
         public string DeleteEmployee(int id)

@@ -17,6 +17,10 @@
     {
         <div class="alert alert-success">@ViewBag.DeleteMessage</div>
     }
+    @if (ViewBag.SucessFullyAddedMessage != null)
+    {
+        <div class="alert alert-success">@ViewBag.SucessFullyAddedMessage</div>
+    }
 </div>
 
 @using (Html.BeginForm())
@@ -39,7 +43,7 @@
             </div>
             <div class="row mt-2">
                 <div class="col-6">
-                    <input type="submit" value="Search" class="btn btn-primary" disabled="@Model.Count() == 0" />
+                    <input type="submit" value="Search" class="btn btn-primary"/>
                     <input type="button" value="Clear" id="ClearSearch" class="btn btn-danger" onclick="clearFields()" />
                 </div>
                 <div class="col-6">

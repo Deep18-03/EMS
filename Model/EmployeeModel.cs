@@ -38,7 +38,7 @@ namespace Model
         public DateTime Birthdate { get; set; }
 
         [Required]
-        [Display(Name = "Department Name")]
+        [Display(Name = "Designation Name")]
         public int DesignationId { get; set; }
 
         public string DepartmentName { get; set; }

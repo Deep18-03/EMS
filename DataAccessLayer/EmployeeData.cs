@@ -23,7 +23,7 @@ namespace DataAccessLayer
             try
             {
                 var employees = (from employee in _context.Employees
-                                 join desig in _context.Designations on employee.DepartmentId equals desig.DesignationId
+                                 join desig in _context.Designations on employee.DesignationId equals desig.DesignationId
                                  join dept in _context.Departments on employee.DepartmentId equals dept.DepartmentId
                                  select new EmployeeModel
                                  {
@@ -112,7 +112,7 @@ namespace DataAccessLayer
 
         }
 
-        public void UpdateEmployee(EmployeeModel model)
+        public bool UpdateEmployee(EmployeeModel model)
         {
             try
             {
@@ -132,7 +132,10 @@ namespace DataAccessLayer
                     };
                     _context.Employees.Update(_employee);
                     _context.SaveChanges();
+
+                    return true;
                 }
+                return false;
             }
             catch (Exception ex)
             {

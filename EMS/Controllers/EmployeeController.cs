@@ -33,8 +33,11 @@ namespace EMS.Controllers
                     SearchByEmpTag = currentFilter;
                 }
 
-                var message = TempData["DeleteMessage"] as string;
-                ViewBag.DeleteMessage = message;
+                var deleteMessage = TempData["DeleteMessage"] as string;
+                ViewBag.DeleteMessage = deleteMessage;
+
+                var Addedmessage = TempData["SucessFullyAddedMessage"] as string;
+                ViewBag.SucessFullyAddedMessage = Addedmessage;
 
                 ViewData["CurrentSort"] = sortField;
                 ViewBag.CurrentFilter = SearchByEmpTag;
@@ -72,6 +75,7 @@ namespace EMS.Controllers
                         ViewBag.Message = message;
                         return View();
                     }
+                    TempData["SucessFullyAddedMessage"] = message;
                     return RedirectToAction("Index");
                 }
                 ViewBag.Departments = _departmentManager.GetDepartmentDropdownList();
@@ -109,13 +113,7 @@ namespace EMS.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var message = _employeeManager.UpdateEmployee(model);
-
-                    if (message == AppConstant.alreadyExists)
-                    {
-                        ViewBag.Message = message;
-                        return View();
-                    }
+                    _employeeManager.UpdateEmployee(model);
                     return RedirectToAction("Index");
                 }
                 ViewBag.Departments = _departmentManager.GetDepartmentDropdownList();

@@ -12,7 +12,7 @@ namespace BussinessLayer.Interface
         IEnumerable<EmployeeModel> GetAllEmployees( string SearchByEmpTag, string SearchByFirstName, string SearchByEmail);
         string AddEmployee(EmployeeModel model);
         EmployeeModel GetEmployeeById(int id);
-        string UpdateEmployee(EmployeeModel model);
+        bool UpdateEmployee(EmployeeModel model);
         string DeleteEmployee(int id);
     }
 }

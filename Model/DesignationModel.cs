@@ -7,6 +7,7 @@ namespace Model
         public int DesignationId { get; set; }
 
         [Required]
+        [Display(Name = "Designation Name")]
         public string DesignationName { get; set; }
     }
 }
