@@ -10,6 +10,6 @@ namespace BussinessLayer.Interface
     public interface IDesignationManager
     {
         IEnumerable<DesignationModel> GetDesignationDropdownList();
-        bool AddDesignation(DesignationModel model);
+        string AddDesignation(DesignationModel model);
     }
 }

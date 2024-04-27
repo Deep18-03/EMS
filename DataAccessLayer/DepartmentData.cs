@@ -37,10 +37,11 @@ namespace DataAccessLayer.Interface
             }
         }
 
-        public bool AddDepartment(DepartmentModel model)
+        public void AddDepartment(DepartmentModel model)
         {
             try
             {
+                
                 if (model != null)
                 {
                     var _department = new DepartmentEntity
@@ -50,13 +51,23 @@ namespace DataAccessLayer.Interface
 
                     _context.Departments.Add(_department);
                     _context.SaveChanges();
-
-                    return true;
                 }
-                return false;
             }
             catch (System.Exception)
             {
+                throw;
+            }
+        }
+
+        public bool DepartmentExists(string departmentName)
+        {
+            try
+            {
+                return _context.Departments.Any(d => d.DepartmentName.Trim().ToLower() == departmentName.Trim().ToLower());
+            }
+            catch (Exception)
+            {
+
                 throw;
             }
         }

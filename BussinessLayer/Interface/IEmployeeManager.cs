@@ -10,9 +10,9 @@ namespace BussinessLayer.Interface
     public interface IEmployeeManager
     {
         IEnumerable<EmployeeModel> GetAllEmployees( string SearchByEmpTag, string SearchByFirstName, string SearchByEmail);
-        bool AddEmployee(EmployeeModel model);
+        string AddEmployee(EmployeeModel model);
         EmployeeModel GetEmployeeById(int id);
-        bool UpdateEmployee(EmployeeModel model);
-        bool DeleteEmployee(int id);
+        string UpdateEmployee(EmployeeModel model);
+        string DeleteEmployee(int id);
     }
 }

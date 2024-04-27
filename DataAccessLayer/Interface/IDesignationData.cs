@@ -11,5 +11,6 @@ namespace DataAccessLayer.Interface
     {
         IEnumerable<DesignationModel> GetDesignationDropdownList();
         bool AddDesignation(DesignationModel model);
+        bool DesignationExists(string designationName);
     }
 }

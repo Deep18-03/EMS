@@ -4,6 +4,12 @@
     ViewData["Title"] = Model != null ? "Edit" : "Create";
 }
 
+<div id="message">
+    @if (ViewBag.Message != null)
+    {
+        <p class="alert alert-success">@ViewBag.Message</p>
+    }
+</div>
 
 <hr />
 <div class="card">
@@ -91,6 +97,14 @@
 
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            $("#message").fadeOut("slow");
+        }, 3000);
+    });
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

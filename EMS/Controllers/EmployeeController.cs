@@ -1,4 +1,5 @@
 ﻿using BussinessLayer.Interface;
+using EMS.Common;
 using Microsoft.AspNetCore.Mvc;
 using Model;
 using System.Collections.Generic;
@@ -30,6 +31,9 @@ namespace EMS.Controllers
                 SearchByEmpTag = currentFilter;
             }
 
+            var message = TempData["DeleteMessage"] as string;
+            ViewBag.DeleteMessage = message;
+
             ViewData["CurrentSort"] = sortField;
             ViewBag.CurrentFilter = SearchByEmpTag;
 
@@ -51,7 +55,12 @@ namespace EMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                var isSucess = _employeeManager.AddEmployee(model);
+                var message = _employeeManager.AddEmployee(model);
+                if (message == AppConstant.alreadyExists)
+                {
+                    ViewBag.Message = message;
+                    return View();
+                }
                 return RedirectToAction("Index");
             }
             ViewBag.Departments = _departmentManager.GetDepartmentDropdownList();
@@ -71,7 +80,13 @@ namespace EMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                var isSuccess = _employeeManager.UpdateEmployee(model);
+                var message = _employeeManager.UpdateEmployee(model);
+
+                if (message == AppConstant.alreadyExists)
+                {
+                    ViewBag.Message = message;
+                    return View();
+                }
                 return RedirectToAction("Index");
             }
             ViewBag.Departments = _departmentManager.GetDepartmentDropdownList();
@@ -81,8 +96,8 @@ namespace EMS.Controllers
 
         public IActionResult Delete(int id)
         {
-            var isSuccess = _employeeManager.DeleteEmployee(id);
-
+            var message = _employeeManager.DeleteEmployee(id);
+            TempData["DeleteMessage"] = message;
             return RedirectToAction("Index");
         }
 

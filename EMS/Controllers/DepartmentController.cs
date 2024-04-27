@@ -1,10 +1,7 @@
 ﻿using BussinessLayer.Interface;
+using EMS.Common;
 using Microsoft.AspNetCore.Mvc;
 using Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EMS.Controllers
 {
@@ -25,7 +22,12 @@ namespace EMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                var isSucess = _departmentManager.AddDepartment(model);
+                string message = _departmentManager.AddDepartment(model);
+                if(message == AppConstant.alreadyExists)
+                {
+                    ViewBag.Message = message;
+                    return View();
+                }
                 return RedirectToAction("Create", "Employee");
             }
             return View();

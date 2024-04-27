@@ -111,7 +111,7 @@ namespace DataAccessLayer
 
         }
 
-        public bool UpdateEmployee(EmployeeModel model)
+        public void UpdateEmployee(EmployeeModel model)
         {
             try
             {
@@ -131,10 +131,7 @@ namespace DataAccessLayer
                     };
                     _context.Employees.Update(_employee);
                     _context.SaveChanges();
-
-                    return true;
                 }
-                return false;
             }
             catch (System.Exception)
             {
@@ -161,6 +158,18 @@ namespace DataAccessLayer
                 throw;
             }
 
+        }
+
+        public bool EmployeeExists(string empTagNumber)
+        {
+            try
+            {
+                return _context.Employees.Any(d => d.EmpTagNumber.Trim().ToLower() == empTagNumber.Trim().ToLower());
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }

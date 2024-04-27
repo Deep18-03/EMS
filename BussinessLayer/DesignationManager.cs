@@ -1,5 +1,6 @@
 ﻿using BussinessLayer.Interface;
 using DataAccessLayer.Interface;
+using EMS.Common;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,20 @@ namespace BussinessLayer
             return _designationData.GetDesignationDropdownList();
         }
 
-        public bool AddDesignation(DesignationModel model)
+        public string AddDesignation(DesignationModel model)
         {
-            return _designationData.AddDesignation(model);
+            bool designationExists = _designationData.DesignationExists(model.DesignationName);
+
+            if (designationExists)
+            {
+                return AppConstant.alreadyExists;
+            }
+            else
+            {
+                _designationData.AddDesignation(model);
+
+                return AppConstant.addedSuccessfully;
+            }
         }
     }
 }

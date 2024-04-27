@@ -1,5 +1,6 @@
 ﻿using BussinessLayer.Interface;
 using DataAccessLayer.Interface;
+using EMS.Common;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -34,9 +35,19 @@ namespace BussinessLayer
             return employees;
         }
 
-        public bool AddEmployee(EmployeeModel model)
+        public string AddEmployee(EmployeeModel model)
         {
-            return _employeeData.AddEmployee(model);
+            bool employeeExists = _employeeData.EmployeeExists(model.EmpTagNumber);
+            if (employeeExists)
+            {
+                return AppConstant.alreadyExists;
+            }
+            else
+            {
+                _employeeData.AddEmployee(model);
+                return AppConstant.addedSuccessfully;
+            }
+
         }
 
         public EmployeeModel GetEmployeeById(int id)
@@ -44,14 +55,32 @@ namespace BussinessLayer
             return _employeeData.GetEmployeeById(id);
         }
 
-        public bool UpdateEmployee(EmployeeModel model)
+        public string UpdateEmployee(EmployeeModel model)
         {
-            return _employeeData.UpdateEmployee(model);
+            bool employeeExists = _employeeData.EmployeeExists(model.EmpTagNumber);
+            if (employeeExists)
+            {
+                return AppConstant.alreadyExists;
+            }
+            else
+            {
+                 _employeeData.UpdateEmployee(model);
+                return AppConstant.addedSuccessfully;
+            }
         }
 
-        public bool DeleteEmployee(int id)
+        public string DeleteEmployee(int id)
         {
-            return _employeeData.DeleteEmployee(id);
+            var employeeDeleted = _employeeData.DeleteEmployee(id);
+
+            if (employeeDeleted)
+            {
+                return AppConstant.deletedSuccessfully;
+            }
+            else
+            {
+                return AppConstant.deletedSuccessfully;
+            }
         }
 
 

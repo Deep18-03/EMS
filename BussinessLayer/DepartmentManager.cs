@@ -1,5 +1,6 @@
 ﻿using BussinessLayer.Interface;
 using DataAccessLayer.Interface;
+using EMS.Common;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,20 @@ namespace BussinessLayer
             return _departmentData.GetDepartmentDropdownList();
         }
 
-        public bool AddDepartment(DepartmentModel model)
+        public string AddDepartment(DepartmentModel model)
         {
-            return _departmentData.AddDepartment(model);
+            bool departmentExists = _departmentData.DepartmentExists(model.DepartmentName);
+
+            if (departmentExists)
+            {
+                return AppConstant.alreadyExists;
+            }
+            else
+            {
+                _departmentData.AddDepartment(model);
+
+                return AppConstant.addedSuccessfully;
+            }
         }
     }
 }

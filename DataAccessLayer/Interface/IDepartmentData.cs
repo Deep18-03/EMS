@@ -10,6 +10,8 @@ namespace DataAccessLayer.Interface
     public interface IDepartmentData
     {
         IEnumerable<DepartmentModel> GetDepartmentDropdownList();
-        bool AddDepartment(DepartmentModel model);
+        void AddDepartment(DepartmentModel model);
+        bool DepartmentExists(string departmentName);
+      
     }
 }

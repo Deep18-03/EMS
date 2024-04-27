@@ -8,7 +8,8 @@ namespace DataAccessLayer.Interface
         IEnumerable<EmployeeModel> GetAllEmployees();
         bool AddEmployee(EmployeeModel model);
         EmployeeModel GetEmployeeById(int id);
-        bool UpdateEmployee(EmployeeModel model);
+        void UpdateEmployee(EmployeeModel model);
         bool DeleteEmployee(int id);
+        bool EmployeeExists(string empTagNumber);
     }
 }

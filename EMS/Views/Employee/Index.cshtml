@@ -8,10 +8,16 @@
 }
 
 <p>
-    
+
 </p>
 
 
+<div id="message">
+    @if (ViewBag.DeleteMessage != null)
+    {
+        <div class="alert alert-success">@ViewBag.DeleteMessage</div>
+    }
+</div>
 
 @using (Html.BeginForm())
 {
@@ -31,10 +37,10 @@
                     @Html.TextBox("SearchByEmail", null, new { @class = "form-control" })
                 </div>
             </div>
-            <div class="row mt-2" >
+            <div class="row mt-2">
                 <div class="col-6">
-                    <input type="submit" value="Search" class="btn btn-primary" />
-                    <input type="button" value="Clear" id="ClearSearch" class="btn btn-danger" onclick="clearFields()"/>
+                    <input type="submit" value="Search" class="btn btn-primary" disabled="@Model.Count() == 0" />
+                    <input type="button" value="Clear" id="ClearSearch" class="btn btn-danger" onclick="clearFields()" />
                 </div>
                 <div class="col-6">
                     <a asp-action="Create" class="btn btn-secondary" style="float:right">Add Employee</a>
@@ -166,6 +172,10 @@
             $('#deleteButton').attr('href', '@Url.Action("Delete", "Employee")' + '?id=' + id);
             $('#deleteConfirmationModal').modal('show');
         });
+
+        setTimeout(function () {
+            $("#message").fadeOut("slow");
+        }, 3000);
     });
 
     function clearFields() {

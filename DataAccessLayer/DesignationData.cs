@@ -61,5 +61,17 @@ namespace DataAccessLayer
                 throw;
             }
         }
+
+        public bool DesignationExists(string designationName)
+        {
+            try
+            {
+                return _context.Designations.Any(d => d.DesignationName.Trim().ToLower() == designationName.Trim().ToLower());
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
