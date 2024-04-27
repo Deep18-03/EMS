@@ -30,6 +30,7 @@ namespace Model
         public string EmailAddress { get; set; }
 
         [Required]
+        [Display(Name = "Department Name")]
         public int DepartmentId { get; set; }
 
         [DataType(DataType.Date)]
@@ -37,6 +38,7 @@ namespace Model
         public DateTime Birthdate { get; set; }
 
         [Required]
+        [Display(Name = "Department Name")]
         public int DesignationId { get; set; }
 
         public string DepartmentName { get; set; }

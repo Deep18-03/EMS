@@ -3,6 +3,7 @@ using DataAccessLayer.Context;
 using DataAccessLayer.Entity;
 using DataAccessLayer.Interface;
 using Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -41,9 +42,9 @@ namespace DataAccessLayer
 
                 return employees;
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("An error occurred in the data access layer for getting employee list", ex);
             }
 
         }
@@ -73,9 +74,9 @@ namespace DataAccessLayer
                 }
                 return false;
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("An error occurred in the data access layer for adding employee", ex);
             }
         }
 
@@ -104,9 +105,9 @@ namespace DataAccessLayer
 
                 return employeeModel;
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("An error occurred in the data access layer for getting employee ", ex);
             }
 
         }
@@ -133,9 +134,9 @@ namespace DataAccessLayer
                     _context.SaveChanges();
                 }
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("An error occurred in the data access layer for updating employee ", ex);
             }
 
         }
@@ -153,9 +154,9 @@ namespace DataAccessLayer
                 }
                 return false;
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("An error occurred in the data access layer for deleting employee ", ex);
             }
 
         }
@@ -166,8 +167,9 @@ namespace DataAccessLayer
             {
                 return _context.Employees.Any(d => d.EmpTagNumber.Trim().ToLower() == empTagNumber.Trim().ToLower());
             }
-            catch
+            catch(Exception ex)
             {
+                throw new Exception("An error occurred in the data access layer for employee already exists", ex);
                 throw;
             }
         }

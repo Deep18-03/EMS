@@ -24,18 +24,26 @@ namespace BussinessLayer
 
         public string AddDepartment(DepartmentModel model)
         {
-            bool departmentExists = _departmentData.DepartmentExists(model.DepartmentName);
-
-            if (departmentExists)
+            try
             {
-                return AppConstant.alreadyExists;
-            }
-            else
-            {
-                _departmentData.AddDepartment(model);
+                bool departmentExists = _departmentData.DepartmentExists(model.DepartmentName);
 
-                return AppConstant.addedSuccessfully;
+                if (departmentExists)
+                {
+                    return AppConstant.alreadyExists;
+                }
+                else
+                {
+                    _departmentData.AddDepartment(model);
+
+                    return AppConstant.addedSuccessfully;
+                }
             }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred in the business logic while adding department", ex);
+            }
+           
         }
     }
 }

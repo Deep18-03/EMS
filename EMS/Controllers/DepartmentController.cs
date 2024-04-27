@@ -20,17 +20,26 @@ namespace EMS.Controllers
         [HttpPost]
         public IActionResult Create(DepartmentModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                string message = _departmentManager.AddDepartment(model);
-                if(message == AppConstant.alreadyExists)
+                if (ModelState.IsValid)
                 {
-                    ViewBag.Message = message;
-                    return View();
+                    string message = _departmentManager.AddDepartment(model);
+                    if (message == AppConstant.alreadyExists)
+                    {
+                        ViewBag.Message = message;
+                        return View();
+                    }
+                    return RedirectToAction("Create", "Employee");
                 }
-                return RedirectToAction("Create", "Employee");
+                return View();
             }
-            return View();
+            catch (System.Exception)
+            {
+                return View("Error");
+                throw;
+            }
+           
         }
     }
 }

@@ -30,10 +30,9 @@ namespace DataAccessLayer.Interface
                 })
                 .ToList();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                throw new Exception("An error occurred in the data access layer for getting department list", ex);
             }
         }
 
@@ -53,8 +52,9 @@ namespace DataAccessLayer.Interface
                     _context.SaveChanges();
                 }
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
+                throw new Exception("An error occurred in the data access layer for adding department", ex);
                 throw;
             }
         }
@@ -65,9 +65,9 @@ namespace DataAccessLayer.Interface
             {
                 return _context.Departments.Any(d => d.DepartmentName.Trim().ToLower() == departmentName.Trim().ToLower());
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                throw new Exception("An error occurred in the data access layer for department lready exists", ex);
                 throw;
             }
         }

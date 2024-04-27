@@ -22,25 +22,34 @@ namespace EMS.Controllers
 
         public IActionResult Index(string sortField, string currentSortField, string currentSortOrder, string currentFilter, string SearchByEmpTag, string SearchByFirstName, string SearchByEmail, int? pageNo)
         {
-            if (SearchByEmpTag != null )
+            try
             {
-                pageNo = 1;
+                if (SearchByEmpTag != null)
+                {
+                    pageNo = 1;
+                }
+                else
+                {
+                    SearchByEmpTag = currentFilter;
+                }
+
+                var message = TempData["DeleteMessage"] as string;
+                ViewBag.DeleteMessage = message;
+
+                ViewData["CurrentSort"] = sortField;
+                ViewBag.CurrentFilter = SearchByEmpTag;
+
+                var employees = _employeeManager.GetAllEmployees(SearchByEmpTag, SearchByFirstName, SearchByEmail);
+                employees = SortEmployeeData(employees, sortField, currentSortField, currentSortOrder);
+
+                return View(PagingList<EmployeeModel>.CreateAsync(employees.AsQueryable<EmployeeModel>(), pageNo ?? 1, 10));
             }
-            else
+            catch (System.Exception)
             {
-                SearchByEmpTag = currentFilter;
+                return View("Error");
+                throw;
             }
-
-            var message = TempData["DeleteMessage"] as string;
-            ViewBag.DeleteMessage = message;
-
-            ViewData["CurrentSort"] = sortField;
-            ViewBag.CurrentFilter = SearchByEmpTag;
-
-            var employees = _employeeManager.GetAllEmployees( SearchByEmpTag, SearchByFirstName, SearchByEmail);
-            employees = SortEmployeeData(employees, sortField, currentSortField, currentSortOrder);
-
-            return View(PagingList<EmployeeModel>.CreateAsync(employees.AsQueryable<EmployeeModel>(), pageNo ?? 1, 10));
+            
         }
 
         public IActionResult Create()
@@ -53,84 +62,128 @@ namespace EMS.Controllers
         [HttpPost]
         public IActionResult Create(EmployeeModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var message = _employeeManager.AddEmployee(model);
-                if (message == AppConstant.alreadyExists)
+                if (ModelState.IsValid)
                 {
-                    ViewBag.Message = message;
-                    return View();
+                    var message = _employeeManager.AddEmployee(model);
+                    if (message == AppConstant.alreadyExists)
+                    {
+                        ViewBag.Message = message;
+                        return View();
+                    }
+                    return RedirectToAction("Index");
                 }
-                return RedirectToAction("Index");
+                ViewBag.Departments = _departmentManager.GetDepartmentDropdownList();
+                ViewBag.Designations = _designationManager.GetDesignationDropdownList();
+                return View();
             }
-            ViewBag.Departments = _departmentManager.GetDepartmentDropdownList();
-            ViewBag.Designations = _designationManager.GetDesignationDropdownList();
-            return View();
+            catch (System.Exception)
+            {
+                return View("Error");
+                throw;
+            }
+           
         }
         public IActionResult Edit(int id)
         {
-            EmployeeModel data = _employeeManager.GetEmployeeById(id);
-            ViewBag.Departments = _departmentManager.GetDepartmentDropdownList();
-            ViewBag.Designations = _designationManager.GetDesignationDropdownList();
-            return View("Create", data);
+            try
+            {
+                EmployeeModel data = _employeeManager.GetEmployeeById(id);
+                ViewBag.Departments = _departmentManager.GetDepartmentDropdownList();
+                ViewBag.Designations = _designationManager.GetDesignationDropdownList();
+                return View("Create", data);
+            }
+            catch (System.Exception)
+            {
+                return View("Error");
+                throw;
+            }
+          
         }
 
         [HttpPost]
         public IActionResult Edit(EmployeeModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var message = _employeeManager.UpdateEmployee(model);
-
-                if (message == AppConstant.alreadyExists)
+                if (ModelState.IsValid)
                 {
-                    ViewBag.Message = message;
-                    return View();
+                    var message = _employeeManager.UpdateEmployee(model);
+
+                    if (message == AppConstant.alreadyExists)
+                    {
+                        ViewBag.Message = message;
+                        return View();
+                    }
+                    return RedirectToAction("Index");
                 }
-                return RedirectToAction("Index");
+                ViewBag.Departments = _departmentManager.GetDepartmentDropdownList();
+                ViewBag.Designations = _designationManager.GetDesignationDropdownList();
+                return View("Create", model);
             }
-            ViewBag.Departments = _departmentManager.GetDepartmentDropdownList();
-            ViewBag.Designations = _designationManager.GetDesignationDropdownList();
-            return View("Create", model);
+            catch (System.Exception)
+            {
+                return View("Error");
+                throw;
+            }
+           
         }
 
         public IActionResult Delete(int id)
         {
-            var message = _employeeManager.DeleteEmployee(id);
-            TempData["DeleteMessage"] = message;
-            return RedirectToAction("Index");
+            try
+            {
+                var message = _employeeManager.DeleteEmployee(id);
+                TempData["DeleteMessage"] = message;
+                return RedirectToAction("Index");
+            }
+            catch (System.Exception)
+            {
+                return View("Error");
+                throw;
+            }
+           
         }
 
         private IEnumerable<EmployeeModel> SortEmployeeData(IEnumerable<EmployeeModel> employees, string sortField, string currentSortField, string currentSortOrder)
         {
-            if (string.IsNullOrEmpty(sortField))
+            try
             {
-                ViewBag.SortField = "EmpTagNumber";
-                ViewBag.SortOrder = "Asc";
-            }
-            else
-            {
-                if (currentSortField == sortField)
+                if (string.IsNullOrEmpty(sortField))
                 {
-                    ViewBag.SortOrder = currentSortOrder == "Asc" ? "Desc" : "Asc";
+                    ViewBag.SortField = "EmpTagNumber";
+                    ViewBag.SortOrder = "Asc";
                 }
                 else
                 {
-                    ViewBag.SortOrder = "Asc";
+                    if (currentSortField == sortField)
+                    {
+                        ViewBag.SortOrder = currentSortOrder == "Asc" ? "Desc" : "Asc";
+                    }
+                    else
+                    {
+                        ViewBag.SortOrder = "Asc";
+                    }
+                    ViewBag.SortField = sortField;
                 }
-                ViewBag.SortField = sortField;
-            }
 
-            var propertyInfo = typeof(EmployeeModel).GetProperty(ViewBag.SortField);
-            if (ViewBag.SortOrder == "Asc")
-            {
-                employees = employees.OrderBy(s => propertyInfo.GetValue(s, null)).ToList();
+                var propertyInfo = typeof(EmployeeModel).GetProperty(ViewBag.SortField);
+                if (ViewBag.SortOrder == "Asc")
+                {
+                    employees = employees.OrderBy(s => propertyInfo.GetValue(s, null)).ToList();
+                }
+                else
+                {
+                    employees = employees.OrderByDescending(s => propertyInfo.GetValue(s, null)).ToList();
+                }
+                return employees;
             }
-            else
+            catch (System.Exception)
             {
-                employees = employees.OrderByDescending(s => propertyInfo.GetValue(s, null)).ToList();
+                throw;
             }
-            return employees;
+           
         }
     }
 }

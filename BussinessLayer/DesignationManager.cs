@@ -24,18 +24,26 @@ namespace BussinessLayer
 
         public string AddDesignation(DesignationModel model)
         {
-            bool designationExists = _designationData.DesignationExists(model.DesignationName);
-
-            if (designationExists)
+            try
             {
-                return AppConstant.alreadyExists;
-            }
-            else
-            {
-                _designationData.AddDesignation(model);
+                bool designationExists = _designationData.DesignationExists(model.DesignationName);
 
-                return AppConstant.addedSuccessfully;
+                if (designationExists)
+                {
+                    return AppConstant.alreadyExists;
+                }
+                else
+                {
+                    _designationData.AddDesignation(model);
+
+                    return AppConstant.addedSuccessfully;
+                }
             }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred in the business logic while adding designation", ex);
+            }
+        
         }
     }
 }

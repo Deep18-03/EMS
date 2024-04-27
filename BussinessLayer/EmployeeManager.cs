@@ -18,68 +18,105 @@ namespace BussinessLayer
 
         public IEnumerable<EmployeeModel> GetAllEmployees(string SearchByEmpTag,string SearchByFirstName, string SearchByEmail)
         {
-            var employees = _employeeData.GetAllEmployees();
+            try
+            {
+                var employees = _employeeData.GetAllEmployees();
 
-            if (!String.IsNullOrEmpty(SearchByEmpTag))
-            {
-                employees = employees.Where(s => s.EmpTagNumber.ToLower().Contains(SearchByEmpTag.Trim().ToLower())).ToList();
+                if (!String.IsNullOrEmpty(SearchByEmpTag))
+                {
+                    employees = employees.Where(s => s.EmpTagNumber.ToLower().Contains(SearchByEmpTag.Trim().ToLower())).ToList();
+                }
+                if (!String.IsNullOrEmpty(SearchByFirstName))
+                {
+                    employees = employees.Where(s => s.FirstName.ToLower().Contains(SearchByFirstName.Trim().ToLower())).ToList();
+                }
+                if (!String.IsNullOrEmpty(SearchByEmail))
+                {
+                    employees = employees.Where(s => s.EmailAddress.ToLower().Contains(SearchByEmail.Trim().ToLower())).ToList();
+                }
+                return employees;
             }
-            if (!String.IsNullOrEmpty(SearchByFirstName))
+            catch (Exception ex)
             {
-                employees = employees.Where(s => s.FirstName.ToLower().Contains(SearchByFirstName.Trim().ToLower())).ToList();
+                throw new Exception("An error occurred in the business logic while getting employees", ex);
             }
-            if (!String.IsNullOrEmpty(SearchByEmail))
-            {
-                employees = employees.Where(s => s.EmailAddress.ToLower().Contains(SearchByEmail.Trim().ToLower())).ToList();
-            }
-            return employees;
+           
         }
 
         public string AddEmployee(EmployeeModel model)
         {
-            bool employeeExists = _employeeData.EmployeeExists(model.EmpTagNumber);
-            if (employeeExists)
+            try
             {
-                return AppConstant.alreadyExists;
+                bool employeeExists = _employeeData.EmployeeExists(model.EmpTagNumber);
+                if (employeeExists)
+                {
+                    return AppConstant.alreadyExists;
+                }
+                else
+                {
+                    _employeeData.AddEmployee(model);
+                    return AppConstant.addedSuccessfully;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                _employeeData.AddEmployee(model);
-                return AppConstant.addedSuccessfully;
+                throw new Exception("An error occurred in the business logic while adding employees", ex);
             }
-
         }
 
         public EmployeeModel GetEmployeeById(int id)
         {
-            return _employeeData.GetEmployeeById(id);
+            try
+            {
+                return _employeeData.GetEmployeeById(id);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred in the business logic while fetching employee", ex);
+            }
         }
 
         public string UpdateEmployee(EmployeeModel model)
         {
-            bool employeeExists = _employeeData.EmployeeExists(model.EmpTagNumber);
-            if (employeeExists)
+            try
             {
-                return AppConstant.alreadyExists;
+                bool employeeExists = _employeeData.EmployeeExists(model.EmpTagNumber);
+                if (employeeExists)
+                {
+                    return AppConstant.alreadyExists;
+                }
+                else
+                {
+                    _employeeData.UpdateEmployee(model);
+                    return AppConstant.addedSuccessfully;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                 _employeeData.UpdateEmployee(model);
-                return AppConstant.addedSuccessfully;
+                throw new Exception("An error occurred in the business logic while updating employee", ex);
             }
+            
         }
 
         public string DeleteEmployee(int id)
         {
-            var employeeDeleted = _employeeData.DeleteEmployee(id);
+            try
+            {
+                var employeeDeleted = _employeeData.DeleteEmployee(id);
 
-            if (employeeDeleted)
-            {
-                return AppConstant.deletedSuccessfully;
+                if (employeeDeleted)
+                {
+                    return AppConstant.deletedSuccessfully;
+                }
+                else
+                {
+                    return AppConstant.deletedSuccessfully;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return AppConstant.deletedSuccessfully;
+                throw new Exception("An error occurred in the business logic while deleting employee", ex);
             }
         }
 

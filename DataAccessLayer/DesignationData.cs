@@ -31,10 +31,9 @@ namespace DataAccessLayer
                                  })
                                  .ToList();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                throw new Exception("An error occurred in the data access layer for getting designation list", ex);
             }
         }
 
@@ -56,9 +55,9 @@ namespace DataAccessLayer
                 }
                 return false;
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("An error occurred in the data access layer for adding designation ", ex);
             }
         }
 
@@ -68,9 +67,9 @@ namespace DataAccessLayer
             {
                 return _context.Designations.Any(d => d.DesignationName.Trim().ToLower() == designationName.Trim().ToLower());
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("An error occurred in the data access layer for designation already exists", ex);
             }
         }
     }
